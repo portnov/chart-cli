@@ -2,6 +2,7 @@
 
 module Parser where
 
+import Data.Colour.Names
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 
@@ -38,6 +39,9 @@ parseText opts title text =
   in  ChartData {
           chtTitle = title
         , chtColumns = columns
+        , chtBackground = white
+        , chtForeground = black
+        , chtLegend = True
         , chtValues = map parseLine dataLines
       }
 

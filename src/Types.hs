@@ -7,6 +7,7 @@ import Data.Dates
 import Data.Time
 import Data.Time.Calendar
 import Data.Time.LocalTime
+import Data.Colour
 import Graphics.Rendering.Chart
 
 data ParseOptions = ParseOptions {
@@ -28,6 +29,9 @@ data Column =
 
 data ChartData = ChartData {
       chtTitle :: T.Text
+    , chtBackground :: Colour Double
+    , chtForeground :: Colour Double
+    , chtLegend :: Bool
     , chtColumns :: [Column]
     , chtValues :: [[Value]]
   }
@@ -73,6 +77,7 @@ instance PlotValue Value where
   
   autoAxis = \list ->
     case list of
+      [] -> mapAxisData Number toDouble $ autoAxis $ map toDouble list
       (Number x : _) -> mapAxisData Number toDouble $ autoAxis $ map toDouble list
       (Date dt : _) -> mapAxisData Date toTime $ autoAxis $ map toTime list
       (Index i : _) -> mapAxisData Index toIndex $ autoAxis $ map toIndex list
@@ -84,6 +89,9 @@ data CmdLine = CmdLine {
     , cmdTitle :: Maybe String
     , cmdWidth :: Int
     , cmdHeight :: Int
+    , cmdBackground :: Colour Double
+    , cmdForeground :: Colour Double
+    , cmdLegend :: Bool
     , cmdInput :: FilePath
   }
   deriving (Show)

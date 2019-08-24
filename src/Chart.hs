@@ -106,7 +106,32 @@ chartToPlots (PointsChart plots) = map toPlot plots
 makeChart :: ChartConfig -> ChartData -> Layout Value Double
 makeChart chtype cht =
   let title = chtTitle cht
+      foreground = chtForeground cht
+      background = chtBackground cht
+      setFontStyle = font_color .~ opaque foreground
+      setLineColor = line_color .~ opaque foreground
+      gridStyle = dashedLine 1 [5, 5] $ dissolve 0.5 $ opaque foreground
+      setAxisColor =
+          laxis_style %~ (axis_label_style %~ setFontStyle) .
+                         (axis_line_style %~ setLineColor) .
+                         (axis_grid_style .~ gridStyle)
+      
+      setLegendFont = legend_label_style %~ setFontStyle
+      setBackground = fill_color .~ opaque background
+
+      yAxis = setAxisColor def
+      xAxis = setAxisColor def
+
+      legend = if chtLegend cht
+                 then Just $ setLegendFont $ legend_orientation .~ LORows 4 $ def
+                 else Nothing
+
   in  layout_title .~ T.unpack title
+        $ layout_background %~ setBackground
+        $ layout_title_style %~ setFontStyle
+        $ layout_x_axis .~ xAxis
+        $ layout_y_axis .~ yAxis
+        $ layout_legend .~ legend
         $ layout_plots .~ chartToPlots (convertChart chtype cht)
         $ def
 

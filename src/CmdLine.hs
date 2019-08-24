@@ -3,6 +3,8 @@ module CmdLine where
 
 import qualified Data.Text as T
 import Data.Char (toUpper)
+import Data.Colour
+import Data.Colour.Names
 import Options.Applicative
 import Graphics.Rendering.Chart
 import Graphics.Rendering.Chart.Backend.Cairo
@@ -45,7 +47,45 @@ pCmdLine =
               <> showDefault
               <> help "specify chart height, in pixels"
             )
+      <*> option colour
+            ( long "background"
+              <> short 'b'
+              <> value white
+              <> metavar "COLOR"
+              <> help "specify background color name (see SVG 1.1 spec)"
+            )
+      <*> option colour
+            ( long "foreground"
+              <> short 'f'
+              <> value black
+              <> metavar "COLOR"
+              <> help "specify foreround color name (see SVG 1.1 spec)"
+            )
+      <*> option bool
+            ( long "legend"
+              <> short 'L'
+              <> value True
+              <> metavar "ON|OFF"
+              <> showDefault
+              <> help "enable or disable the legend"
+            )
       <*> strArgument (metavar "INPUT.txt")
+
+colour :: ReadM (Colour Double)
+colour = maybeReader readColourName
+
+bool :: ReadM Bool
+bool = maybeReader $ \str -> 
+  case map toUpper str of
+    "TRUE" -> Just True
+    "ON" -> Just True
+    "YES" -> Just True
+    "Y" -> Just True
+    "FALSE" -> Just False
+    "OFF" -> Just False
+    "NO" -> Just False
+    "N" -> Just False
+    _ -> Nothing
 
 pChart :: Parser ChartConfig
 pChart =

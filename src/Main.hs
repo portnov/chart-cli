@@ -29,12 +29,18 @@ main = do
           Nothing -> cht
           Just title -> cht {chtTitle = T.pack title}
 
+      chart = cht' {
+                  chtForeground = cmdForeground cmd
+                , chtBackground = cmdBackground cmd
+                , chtLegend = cmdLegend cmd
+              }
+
   let width = cmdWidth cmd
       height = cmdHeight cmd
       fileOpts = fo_size .~ (width, height)
                   $ fo_format .~ detectFormat outPath
                   $ def
 
-  renderableToFile fileOpts outPath $ toRenderable $ makeChart (cmdChart cmd) cht'
+  renderableToFile fileOpts outPath $ toRenderable $ makeChart (cmdChart cmd) chart
   return ()
 
