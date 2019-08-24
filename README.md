@@ -94,6 +94,18 @@ Available commands:
   bar                      Make a bar chart
 ```
 
+Installation
+------------
+
+Install it by stack:
+
+```
+$ sudo apt-get install stack
+$ git clone https://github.com/portnov/chart-cli.git
+$ cd chart-cli/
+$ stack install
+```
+
 [1]: http://www.gnuplot.info/
 [2]: http://hackage.haskell.org/package/Chart
 
