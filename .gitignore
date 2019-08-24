@@ -1,7 +1,6 @@
 .stack-work/
 hchart.cabal
 *~
-*.txt
 *.hi
 *.o
 *.swp
