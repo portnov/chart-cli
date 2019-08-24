@@ -38,6 +38,16 @@ Supported chart types for now are:
 
 Other chart types may be added later.
 
+Supported output formats are:
+  
+* PNG (the default one)
+* SVG
+* PS (PostScript)
+* PDF
+
+Output file format is automatically detected by specified output file name. If
+output file name is not specified explicitly, `chart.png` will be used.
+
 Expected input format
 ---------------------
 
@@ -63,7 +73,7 @@ Command-line interface
 ----------------------
 
 I'll put it here for quick reference; more actual information is always
-accessible with `chart --help`;
+accessible with `chart --help`:
 
 ```
 Usage: chart [-o|--output OUTPUT.png] [COMMAND] [-1|--header]
