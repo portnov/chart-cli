@@ -35,6 +35,7 @@ toPairs = transpose . zipWith go [1..]
 toSeries :: [[Value]] -> [(Value, [Double])]
 toSeries = zipWith go [1..]
   where
+    go _ (Date dt : ys) = (Date dt, map toDouble ys)
     go i ys = (Index (PlotIndex i), map toDouble ys)
 
 toAreas :: [[Value]] -> [[(Value, (Double, Double))]]
