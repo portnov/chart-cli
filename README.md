@@ -4,7 +4,6 @@ chart-cli README
 This repo provides a `chart` command-line utility. `chart` is aimed to generate
 basic 2D charts from command line easily.
 
-
 The `chart` utility is not aimed to give full control over generated charts, or
 to generate all possible types of charts - you may anytime do that by use of
 [gnuplot][1] or [Chart package][2]. This utility, instead, gives you a very
@@ -67,7 +66,18 @@ If more than one number per line is provided, then for most chart types (except
 for bar charts) the first column will be used as X values, and other will be
 used as Y values.
 
-There are plans to support date/time values as X values, but it is not implemented yet.
+In the first column, date/time values may be provided instead of numbers (to be
+used as values along X axis). Supported date/time formats are:
+
+* DD.MM.YYYY
+* YYYY/MM/DD
+* `12 September 2012'
+* today, tomorrow, yesterday
+* `in 2 days', '3 weeks ago'
+* `last monday', 'next friday'
+* `last month' (1th of this month), `next year' (1th of January of next year)
+
+(thanks to [dates package][3]).
 
 Command-line interface
 ----------------------
@@ -118,4 +128,5 @@ $ stack install
 
 [1]: http://www.gnuplot.info/
 [2]: http://hackage.haskell.org/package/Chart
+[3]: http://hackage.haskell.org/package/dates
 
