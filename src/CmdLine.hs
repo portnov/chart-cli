@@ -89,7 +89,7 @@ bool = maybeReader $ \str ->
 
 pChart :: Parser ChartConfig
 pChart =
-    subparser (
+    hsubparser (
            command "line" (info (pure Line) (progDesc "Make a line chart"))
         <> command "area" (info (pure Area) (progDesc "Make an area chart"))
         <> command "points" (info (pure Points) (progDesc "Make a points chart"))
@@ -100,8 +100,12 @@ pChart =
 pBar :: Parser ChartConfig
 pBar =
   Bar
-    <$> (    flag' BarsStacked (long "stack")
-         <|> flag' BarsClustered (long "cluster")
+    <$> (    flag' BarsStacked
+                (long "stack"
+                  <> help "stack bars of different columns on top of each other (by default)")
+         <|> flag' BarsClustered
+                (long "cluster"
+                  <> help "place bars of different columns near each other")
          <|> pure BarsStacked
         )
 

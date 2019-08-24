@@ -59,6 +59,41 @@ used as Y values.
 
 There are plans to support date/time values as X values, but it is not implemented yet.
 
+Command-line interface
+----------------------
+
+I'll put it here for quick reference; more actual information is always
+accessible with `chart --help`;
+
+```
+Usage: chart [-o|--output OUTPUT.png] [COMMAND] [-1|--header]
+             [-d|--delimiter CHAR] [-i|--index ON|OFF] [-t|--title TITLE]
+             [-w|--width WIDTH] [-h|--height HEIGHT] [-b|--background COLOR]
+             [-f|--foreground COLOR] [-L|--legend ON|OFF] [INPUT.txt]
+  Make a chart
+
+Available options:
+  -o,--output OUTPUT.png   write output to OUTPUT.png
+  -1,--header              first line contains column headers
+  -d,--delimiter CHAR      specify fields delimiter ('\t' by default)
+  -i,--index ON|OFF        if enabled, treat input data as if there was an
+                           additional first column, containing line numbers,
+                           starting from 1 (default: False)
+  -t,--title TITLE         set chart title to TITLE
+  -w,--width WIDTH         specify chart width, in pixels (default: 800)
+  -h,--height HEIGHT       specify chart height, in pixels (default: 600)
+  -b,--background COLOR    specify background color name (see SVG 1.1 spec)
+  -f,--foreground COLOR    specify foreround color name (see SVG 1.1 spec)
+  -L,--legend ON|OFF       enable or disable the legend (default: True)
+  -h,--help                Show this help text
+
+Available commands:
+  line                     Make a line chart
+  area                     Make an area chart
+  points                   Make a points chart
+  bar                      Make a bar chart
+```
+
 [1]: http://www.gnuplot.info/
 [2]: http://hackage.haskell.org/package/Chart
 
