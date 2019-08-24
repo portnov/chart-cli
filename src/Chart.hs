@@ -64,6 +64,11 @@ mkPointStyle name =
   $ point_radius .~ 4
   $ def
 
+tailOrSingle :: [a] -> [a]
+tailOrSingle [] = []
+tailOrSingle [x] = [x]
+tailOrSingle (x:xs) = xs
+
 convertChart :: ChartConfig -> ChartData -> AnyChart
 convertChart Line cht =
   LineChart [
@@ -71,7 +76,7 @@ convertChart Line cht =
       $ plot_lines_style .~ mkLineStyle title
       $ plot_lines_values .~ [pairs]
       $ def
-    | (pairs, NumberColumn title) <- zip (toPairs (chtValues cht)) (tail $ chtColumns cht)
+    | (pairs, NumberColumn title) <- zip (toPairs (chtValues cht)) (tailOrSingle $ chtColumns cht)
   ]
 convertChart (Bar {..}) cht =
   BarChart $
@@ -86,7 +91,7 @@ convertChart Area cht =
       $ plot_fillbetween_style .~ mkFillStyle title
       $ plot_fillbetween_values .~ area
       $ def
-    | (area, NumberColumn title) <- zip (toAreas (chtValues cht)) (tail $ chtColumns cht)
+    | (area, NumberColumn title) <- zip (toAreas (chtValues cht)) (tailOrSingle $ chtColumns cht)
   ]
 convertChart Points cht =
   PointsChart [

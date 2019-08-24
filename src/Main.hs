@@ -23,6 +23,7 @@ main = do
       outPath = cmdOutput cmd
   let opts = cmdParse cmd
   cht <- parseFile opts path
+--   print $ toPairs $ chtValues cht
   
   let cht' =
         case cmdTitle cmd of
