@@ -1,0 +1,10 @@
+.stack-work/
+hchart.cabal
+*~
+*.txt
+*.hi
+*.o
+*.swp
+*.log
+*.png
+stack.yaml.lock
