@@ -69,7 +69,7 @@ pCmdLine =
               <> showDefault
               <> help "enable or disable the legend"
             )
-      <*> strArgument (metavar "INPUT.txt")
+      <*> (optional $ strArgument (metavar "INPUT.txt"))
 
 colour :: ReadM (Colour Double)
 colour = maybeReader readColourName

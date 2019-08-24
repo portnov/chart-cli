@@ -45,9 +45,13 @@ parseText opts title text =
         , chtValues = map parseLine dataLines
       }
 
-parseFile :: ParseOptions -> FilePath -> IO ChartData
-parseFile opts path = do
-  text <- TIO.readFile path
-  let title = T.pack path
+parseFile :: ParseOptions -> Maybe FilePath -> IO ChartData
+parseFile opts mbPath = do
+  text <- case mbPath of
+            Nothing -> TIO.getContents
+            Just path -> TIO.readFile path
+  let title = case mbPath of
+                Nothing -> "stdin"
+                Just path -> T.pack path
   return $ parseText opts title text
 

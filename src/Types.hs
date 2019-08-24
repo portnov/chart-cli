@@ -92,7 +92,7 @@ data CmdLine = CmdLine {
     , cmdBackground :: Colour Double
     , cmdForeground :: Colour Double
     , cmdLegend :: Bool
-    , cmdInput :: FilePath
+    , cmdInput :: Maybe FilePath
   }
   deriving (Show)
 
