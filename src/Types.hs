@@ -13,14 +13,25 @@ import Graphics.Rendering.Chart
 data ParseOptions = ParseOptions {
       poHeader :: Bool
     , poSeparator :: T.Text
+    , poIndex :: Bool
   }
   deriving (Eq, Show)
 
 data Value =
-    Number { toDouble :: Double  }
-  | Index { toIndex :: PlotIndex }
+    Number Double
+  | Index PlotIndex
   | Date { toTime :: LocalTime }
   deriving (Eq, Show, Ord)
+
+toDouble :: Value -> Double
+toDouble (Number x) = x
+toDouble (Index i) = toValue i
+toDouble (Date dt) = error $ "can't convert date/time to double"
+
+toIndex :: Value -> PlotIndex
+toIndex (Number x) = PlotIndex $ round x
+toIndex (Index i) = i
+toINdex (Date dt) = error $ "can't convert date/time to index"
 
 data Column =
     NumberColumn T.Text

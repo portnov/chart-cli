@@ -29,10 +29,23 @@ parseText opts title text =
           then tail lines
           else lines
 
+      inputValues = map parseLine dataLines
+
+      values =
+        if poIndex opts
+          then zipWith (:) (map Index [1..]) inputValues
+          else inputValues
+      
+      inputColsCount = length (splitLine firstLine)
+      colsCount =
+        if poIndex opts
+          then inputColsCount + 1
+          else inputColsCount
+
       columnNames =
         if poHeader opts
           then splitLine firstLine
-          else map defHeader [0 .. length (splitLine firstLine) - 1]
+          else map defHeader [0 .. colsCount - 1]
 
       columns = map NumberColumn columnNames
 
@@ -42,7 +55,7 @@ parseText opts title text =
         , chtBackground = white
         , chtForeground = black
         , chtLegend = True
-        , chtValues = map parseLine dataLines
+        , chtValues = values
       }
 
 parseFile :: ParseOptions -> Maybe FilePath -> IO ChartData
