@@ -5,20 +5,32 @@ module Parser where
 import Data.Colour.Names
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
+import qualified Data.Attoparsec.Text as A
+import Data.Dates
+import System.IO.Unsafe (unsafePerformIO)
 
 import Types
 
-parseText :: ParseOptions -> T.Text -> T.Text -> ChartData
-parseText opts title text =
+now :: DateTime
+now = unsafePerformIO getCurrentDateTime
+
+parseText :: ParseOptions -> T.Text -> T.Text -> Either String ChartData
+parseText opts title text = do
   let lines = T.lines text
       splitLine line = T.splitOn (poSeparator opts) line
       -- TODO: error handling
-      parseLine line = map (Number . read' . T.unpack) $ splitLine line
+      parseLine :: T.Text -> Either String [Value]
+      parseLine line = mapM parseValue $ splitLine line
 
-      read' s =
-        case reads s of
-          [(x, "")] -> x
-          _ -> error $ "no parse: " ++ s
+      parseValue s =
+        case A.parseOnly (A.double <* A.endOfInput) s of
+          Right value -> Right $ Number value
+          Left numberErr ->
+            case parseDateTime now (T.unpack s) of
+              Right dt -> Right $ Date $ toLocalTime dt
+              Left dateErr -> Left $ "Can't parse `" ++ T.unpack s ++
+                                "` as a number: " ++ numberErr ++
+                                ";\nCan't parse it as a date/time value: " ++ show dateErr
 
       firstLine = head lines
 
@@ -29,12 +41,11 @@ parseText opts title text =
           then tail lines
           else lines
 
-      inputValues = map parseLine dataLines
+  inputValues <- mapM parseLine dataLines
 
-      values =
-        if poIndex opts
-          then zipWith (:) (map Index [1..]) inputValues
-          else inputValues
+  let values = if poIndex opts
+                  then zipWith (:) (map Index [1..]) inputValues
+                  else inputValues
       
       inputColsCount = length (splitLine firstLine)
       colsCount =
@@ -49,7 +60,7 @@ parseText opts title text =
 
       columns = map NumberColumn columnNames
 
-  in  ChartData {
+  return $ ChartData {
           chtTitle = title
         , chtColumns = columns
         , chtBackground = white
@@ -66,5 +77,7 @@ parseFile opts mbPath = do
   let title = case mbPath of
                 Nothing -> "stdin"
                 Just path -> T.pack path
-  return $ parseText opts title text
+  case parseText opts title text of
+    Right chart -> return chart
+    Left err -> fail err
 

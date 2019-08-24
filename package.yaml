@@ -32,6 +32,7 @@ dependencies:
 - time
 - hashable
 - optparse-applicative
+- attoparsec
 
 executables:
   chart:
