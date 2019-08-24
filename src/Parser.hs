@@ -31,7 +31,7 @@ parseText opts title text =
       columnNames =
         if poHeader opts
           then splitLine firstLine
-          else map defHeader [1 .. length (splitLine firstLine)]
+          else map defHeader [0 .. length (splitLine firstLine) - 1]
 
       columns = map NumberColumn columnNames
 

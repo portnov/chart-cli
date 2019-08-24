@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 
 module Chart where
 
@@ -63,7 +64,7 @@ mkPointStyle name =
   $ point_radius .~ 4
   $ def
 
-convertChart :: ChartType -> ChartData -> AnyChart
+convertChart :: ChartConfig -> ChartData -> AnyChart
 convertChart Line cht =
   LineChart [
         plot_lines_title .~ T.unpack title
@@ -72,10 +73,11 @@ convertChart Line cht =
       $ def
     | (pairs, NumberColumn title) <- zip (toPairs (chtValues cht)) (tail $ chtColumns cht)
   ]
-convertChart Bar cht =
+convertChart (Bar {..}) cht =
   BarChart $
       plot_bars_titles .~ [T.unpack title | NumberColumn title <- chtColumns cht]
-    $ plot_bars_item_styles .~ [(mkFillStyle title, Nothing) | NumberColumn title <- chtColumns cht]
+    $ plot_bars_item_styles .~ [(mkFillStyle title, Just (mkLineStyle title)) | NumberColumn title <- chtColumns cht]
+    $ plot_bars_style .~ barStyle
     $ plot_bars_values .~ toSeries (chtValues cht)
     $ def
 convertChart Area cht =
@@ -99,10 +101,9 @@ chartToPlots :: AnyChart -> [Plot Value Double]
 chartToPlots (LineChart plots) = map toPlot plots
 chartToPlots (BarChart plot) = [plotBars plot]
 chartToPlots (AreaChart plots) = map toPlot plots
-chartToPlots (HistogramChart plot) = undefined -- [histToPlot plot]
 chartToPlots (PointsChart plots) = map toPlot plots
 
-makeChart :: ChartType -> ChartData -> Layout Value Double
+makeChart :: ChartConfig -> ChartData -> Layout Value Double
 makeChart chtype cht =
   let title = chtTitle cht
   in  layout_title .~ T.unpack title

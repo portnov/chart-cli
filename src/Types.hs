@@ -1,4 +1,5 @@
 {-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE StandaloneDeriving #-}
 module Types where
 
 import qualified Data.Text as T
@@ -12,6 +13,7 @@ data ParseOptions = ParseOptions {
       poHeader :: Bool
     , poSeparator :: T.Text
   }
+  deriving (Eq, Show)
 
 data Value =
     Number { toDouble :: Double  }
@@ -31,11 +33,12 @@ data ChartData = ChartData {
   }
   deriving (Eq, Show)
 
-data ChartType =
+deriving instance Eq PlotBarsStyle
+
+data ChartConfig =
     Line
-  | Bar
+  | Bar { barStyle :: PlotBarsStyle }
   | Area
-  | Histogram
   | Points
   deriving (Eq, Show)
 
@@ -43,7 +46,6 @@ data AnyChart =
     LineChart [PlotLines Value Double]
   | BarChart (PlotBars Value Double)
   | AreaChart [PlotFillBetween Value Double]
-  | HistogramChart (PlotHist Value Double)
   | PointsChart [PlotPoints Value Double]
 
 toLocalTime :: DateTime -> LocalTime
@@ -74,4 +76,13 @@ instance PlotValue Value where
       (Number x : _) -> mapAxisData Number toDouble $ autoAxis $ map toDouble list
       (Date dt : _) -> mapAxisData Date toTime $ autoAxis $ map toTime list
       (Index i : _) -> mapAxisData Index toIndex $ autoAxis $ map toIndex list
+
+data CmdLine = CmdLine {
+      cmdOutput :: FilePath
+    , cmdChart :: ChartConfig
+    , cmdParse :: ParseOptions
+    , cmdTitle :: Maybe String
+    , cmdInput :: FilePath
+  }
+  deriving (Show)
 

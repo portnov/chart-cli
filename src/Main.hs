@@ -11,14 +11,22 @@ import System.Environment
 import Types
 import Chart
 import Parser
+import CmdLine
 
 main :: IO ()
 main = do
-  [path, outPath] <- getArgs
-  let opts = ParseOptions True "\t"
+  cmd <- parseCmdLine
+  print cmd
+  let path = cmdInput cmd
+      outPath = cmdOutput cmd
+  let opts = cmdParse cmd
   cht <- parseFile opts path
-  print $ toPairs $ chtValues cht
+  
+  let cht' =
+        case cmdTitle cmd of
+          Nothing -> cht
+          Just title -> cht {chtTitle = T.pack title}
 
-  renderableToFile def outPath $ toRenderable $ makeChart Points cht
+  renderableToFile def outPath $ toRenderable $ makeChart (cmdChart cmd) cht'
   return ()
 

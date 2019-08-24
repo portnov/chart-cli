@@ -30,6 +30,7 @@ dependencies:
 - dates
 - time
 - hashable
+- optparse-applicative
 
 executables:
   chart:
