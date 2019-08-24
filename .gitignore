@@ -7,4 +7,7 @@ hchart.cabal
 *.swp
 *.log
 *.png
+*.svg
+*.ps
+*.pdf
 stack.yaml.lock

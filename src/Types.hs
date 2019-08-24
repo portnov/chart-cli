@@ -82,6 +82,8 @@ data CmdLine = CmdLine {
     , cmdChart :: ChartConfig
     , cmdParse :: ParseOptions
     , cmdTitle :: Maybe String
+    , cmdWidth :: Int
+    , cmdHeight :: Int
     , cmdInput :: FilePath
   }
   deriving (Show)
