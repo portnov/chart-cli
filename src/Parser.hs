@@ -2,6 +2,7 @@
 
 module Parser where
 
+import Control.Monad
 import Data.Colour.Names
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
@@ -18,17 +19,24 @@ parseText :: ParseOptions -> T.Text -> T.Text -> Either String ChartData
 parseText opts title text = do
   let lines = T.lines text
       splitLine line = T.splitOn (poSeparator opts) line
-      -- TODO: error handling
-      parseLine :: T.Text -> Either String [Value]
-      parseLine line = mapM parseValue $ splitLine line
 
-      parseValue s =
+      inputColsCount = length (splitLine firstLine)
+
+      parseLine :: Int -> T.Text -> Either String [Value]
+      parseLine lineNo line =
+        let items = splitLine line
+        in  if length items == inputColsCount
+            then zipWithM (parseValue lineNo) [1..] items
+            else Left $ "Line " ++ show lineNo ++ ": number of columns is not equal to number of columns in the first line."
+
+      parseValue lineNo colNo s =
         case A.parseOnly (A.double <* A.endOfInput) s of
           Right value -> Right $ Number value
           Left numberErr ->
             case parseDateTime now (T.unpack s) of
               Right dt -> Right $ Date $ toLocalTime dt
-              Left dateErr -> Left $ "Can't parse `" ++ T.unpack s ++
+              Left dateErr -> Left $ "Line " ++ show lineNo ++ ", column " ++ show colNo ++ ":\n" ++
+                                "Can't parse `" ++ T.unpack s ++
                                 "` as a number: " ++ numberErr ++
                                 ";\nCan't parse it as a date/time value: " ++ show dateErr
 
@@ -41,13 +49,12 @@ parseText opts title text = do
           then tail lines
           else lines
 
-  inputValues <- mapM parseLine dataLines
+  inputValues <- zipWithM parseLine [1..] dataLines
 
   let values = if poIndex opts
                   then zipWith (:) (map Index [1..]) inputValues
                   else inputValues
       
-      inputColsCount = length (splitLine firstLine)
       colsCount =
         if poIndex opts
           then inputColsCount + 1
