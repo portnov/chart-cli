@@ -1,6 +1,6 @@
-name:                hchart
+name:                chart-cli
 version:             0.1.0.0
-github:              "portnov/hchart"
+github:              "portnov/chart-cli"
 license:             BSD3
 author:              "Ilya V. Portnov"
 maintainer:          "portnov84@rambler.ru"
@@ -11,13 +11,13 @@ extra-source-files:
 - ChangeLog.md
 
 # Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
+synopsis:            Command-line utility to draw charts from input data easily
+category:            Graphics
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/portnov/hchart#readme>
+description:         Please see the README on GitHub at <https://github.com/portnov/chart-cli#readme>
 
 dependencies:
 - base >= 4.7 && < 5

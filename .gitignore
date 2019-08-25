@@ -1,5 +1,5 @@
 .stack-work/
-hchart.cabal
+*.cabal
 *~
 *.hi
 *.o

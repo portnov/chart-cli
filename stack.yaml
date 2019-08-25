@@ -36,12 +36,6 @@ extra-deps:
   - cairo-0.13.6.0
   - gtk2hs-buildtools-0.13.5.0
   - dates-0.2.3.0
-  - git: https://github.com/timbod7/haskell-chart
-    commit: 51d94b16f56fffe3464306d568e68e7a63e3b3bb
-    subdirs:
-      - chart
-  - git: https://github.com/Soostone/formattable.git
-    commit: 8ea31bed0fc194c27459e30c78d2d0ffab09ec25
 
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
