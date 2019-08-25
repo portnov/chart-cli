@@ -20,7 +20,7 @@ pCmdLine =
               <> short 'o'
               <> metavar "OUTPUT.png"
               <> value "chart.png"
-              <> help "write output to OUTPUT.png"
+              <> help "write output to OUTPUT.png. Default is chart.png."
             )
       <*> pChart
       <*> pParseOpts
@@ -69,7 +69,10 @@ pCmdLine =
               <> showDefault
               <> help "enable or disable the legend"
             )
-      <*> (optional $ strArgument (metavar "INPUT.txt"))
+      <*> (optional $ strArgument (
+              metavar "INPUT.txt"
+              <> help "Input data file. If not provided, standard input will be used."
+            ))
 
 colour :: ReadM (Colour Double)
 colour = maybeReader readColourName
