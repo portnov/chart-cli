@@ -125,11 +125,9 @@ pParseOpts =
             <> help "specify fields delimiter ('\\t' by default)"
           )
         )
-    <*> option bool
+    <*> switch
           ( long "index"
             <> short 'i'
-            <> metavar "ON|OFF"
-            <> value False
             <> showDefault
             <> help "if enabled, treat input data as if there was an additional first column, containing line numbers, starting from 1"
           )

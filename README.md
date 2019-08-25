@@ -87,7 +87,7 @@ accessible with `chart --help`:
 
 ```
 Usage: chart [-o|--output OUTPUT.png] [COMMAND] [-1|--header]
-             [-d|--delimiter CHAR] [-i|--index ON|OFF] [-t|--title TITLE]
+             [-d|--delimiter CHAR] [-i|--index] [-t|--title TITLE]
              [-w|--width WIDTH] [-h|--height HEIGHT] [-b|--background COLOR]
              [-f|--foreground COLOR] [-L|--legend ON|OFF] [INPUT.txt]
   Make a chart
@@ -96,9 +96,9 @@ Available options:
   -o,--output OUTPUT.png   write output to OUTPUT.png
   -1,--header              first line contains column headers
   -d,--delimiter CHAR      specify fields delimiter ('\t' by default)
-  -i,--index ON|OFF        if enabled, treat input data as if there was an
+  -i,--index               if enabled, treat input data as if there was an
                            additional first column, containing line numbers,
-                           starting from 1 (default: False)
+                           starting from 1
   -t,--title TITLE         set chart title to TITLE
   -w,--width WIDTH         specify chart width, in pixels (default: 800)
   -h,--height HEIGHT       specify chart height, in pixels (default: 600)
