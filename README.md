@@ -119,6 +119,18 @@ Available commands:
 Installation
 ------------
 
+Prerequisites for Debian / Ubuntu Linux:
+
+```
+$ sudo apt install libgmp-dev libgtk-3-dev libgirepository-1.0-1 libgirepository1.0-dev gobject-introspection
+```
+
+Prerequisites for Mac OS X:
+
+```
+$ brew install gobject-introspection gtk+ gtk+3
+```
+
 Install it by stack:
 
 ```
