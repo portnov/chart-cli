@@ -1,6 +1,8 @@
 chart-cli README
 ================
 
+[![Build Status](https://travis-ci.org/portnov/chart-cli.svg?branch=master)](https://travis-ci.org/portnov/chart-cli)
+
 This repo provides a `chart` command-line utility. `chart` is aimed to generate
 basic 2D charts from command line easily.
 
