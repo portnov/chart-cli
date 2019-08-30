@@ -49,6 +49,16 @@ Supported output formats are:
 Output file format is automatically detected by specified output file name. If
 output file name is not specified explicitly, `chart.png` will be used.
 
+### Performance
+
+Plotting the file `bigfile.txt` (2.8Mb, 230 000 + lines) with
+
+```
+chart -o bigfile.png --line-ending=unix -d' ' -i --width=1920 --height=1200 points bigfile.dat 
+```
+
+takes about 45 seconds on my machine (i5 2.8 GHz).
+
 Expected input format
 ---------------------
 
