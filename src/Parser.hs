@@ -17,8 +17,12 @@ now = unsafePerformIO getCurrentDateTime
 
 parseText :: ParseOptions -> T.Text -> T.Text -> Either String ChartData
 parseText opts title text = do
-  let lines = T.lines text
-      splitLine line = T.splitOn (poSeparator opts) line
+  let lines = filter (not . T.null) $
+        case poLineEnding opts of
+          LF -> T.lines text
+          CR -> T.split (== '\r') text
+          CRLF -> T.splitOn "\r\n" text
+      splitLine line = filter (not . T.null) $ T.splitOn (poSeparator opts) line
 
       inputColsCount = length (splitLine firstLine)
 
@@ -27,7 +31,9 @@ parseText opts title text = do
         let items = splitLine line
         in  if length items == inputColsCount
             then zipWithM (parseValue lineNo) [1..] items
-            else Left $ "Line " ++ show lineNo ++ ": number of columns is not equal to number of columns in the first line."
+            else Left $ "Line " ++ show lineNo ++ ": number of columns (" ++ show (length items) ++
+                         ") is not equal to number of columns in the first line (" ++
+                         show inputColsCount ++ ")."
 
       parseValue lineNo colNo s =
         case A.parseOnly (A.double <* A.endOfInput) s of

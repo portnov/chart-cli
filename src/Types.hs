@@ -10,8 +10,15 @@ import Data.Time.LocalTime
 import Data.Colour
 import Graphics.Rendering.Chart
 
+data LineEnding =
+    LF
+  | CR
+  | CRLF
+  deriving (Eq, Show)
+
 data ParseOptions = ParseOptions {
       poHeader :: Bool
+    , poLineEnding :: LineEnding
     , poSeparator :: T.Text
     , poIndex :: Bool
   }

@@ -90,6 +90,19 @@ bool = maybeReader $ \str ->
     "N" -> Just False
     _ -> Nothing
 
+lineEnding :: ReadM LineEnding
+lineEnding = eitherReader $ \str ->
+  case map toUpper str of
+    "LF" -> Right LF
+    "UNIX" -> Right LF
+    "CR" -> Right CR
+    "MACOS" -> Right CR
+    "CRLF" -> Right CRLF
+    "WINDOWS" -> Right CRLF
+    "WIN" -> Right CRLF
+    "DOS" -> Right CRLF
+    _ -> Left "Unknown line ending specified; supported are: LF, UNIX; CR, MACOS, CRLF, WINDOWS, WIN, DOS."
+          
 pChart :: Parser ChartConfig
 pChart =
     hsubparser (
@@ -120,6 +133,13 @@ pParseOpts =
             <> short '1'
             <> help "first line contains column headers"
           )
+    <*> option lineEnding
+          ( long "line-ending"
+            <> showDefault
+            <> value LF
+            <> metavar "UNIX|DOS|MACOS"
+            <> help "specify line endings variant to be used"
+          )
     <*> (T.pack <$> strOption
           ( long "delimiter"
             <> short 'd'
@@ -134,7 +154,7 @@ pParseOpts =
             <> showDefault
             <> help "if enabled, treat input data as if there was an additional first column, containing line numbers, starting from 1"
           )
-          
+
 parseCmdLine :: IO CmdLine
 parseCmdLine = execParser opts
   where
