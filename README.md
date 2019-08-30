@@ -54,7 +54,7 @@ output file name is not specified explicitly, `chart.png` will be used.
 Plotting the file `bigfile.txt` (2.8Mb, 230 000 + lines) with
 
 ```
-chart -o bigfile.png --line-ending=unix -d' ' -i --width=1920 --height=1200 points bigfile.dat 
+chart -o bigfile.png --line-ending=unix -d' ' -i --width=1920 --height=1200 points bigfile.txt 
 ```
 
 takes about 45 seconds on my machine (i5 2.8 GHz).
@@ -99,14 +99,17 @@ accessible with `chart --help`:
 
 ```
 Usage: chart [-o|--output OUTPUT.png] [COMMAND] [-1|--header]
-             [-d|--delimiter CHAR] [-i|--index] [-t|--title TITLE]
-             [-w|--width WIDTH] [-h|--height HEIGHT] [-b|--background COLOR]
-             [-f|--foreground COLOR] [-L|--legend ON|OFF] [INPUT.txt]
+             [--line-ending UNIX|DOS|MACOS] [-d|--delimiter CHAR] [-i|--index]
+             [-t|--title TITLE] [-w|--width WIDTH] [-h|--height HEIGHT]
+             [-b|--background COLOR] [-f|--foreground COLOR]
+             [-L|--legend ON|OFF] [INPUT.txt]
   Make a chart
 
 Available options:
-  -o,--output OUTPUT.png   write output to OUTPUT.png
+  -o,--output OUTPUT.png   write output to OUTPUT.png. Default is chart.png.
   -1,--header              first line contains column headers
+  --line-ending UNIX|DOS|MACOS
+                           specify line endings variant to be used (default: LF)
   -d,--delimiter CHAR      specify fields delimiter ('\t' by default)
   -i,--index               if enabled, treat input data as if there was an
                            additional first column, containing line numbers,
@@ -117,6 +120,8 @@ Available options:
   -b,--background COLOR    specify background color name (see SVG 1.1 spec)
   -f,--foreground COLOR    specify foreround color name (see SVG 1.1 spec)
   -L,--legend ON|OFF       enable or disable the legend (default: True)
+  INPUT.txt                Input data file. If not provided, standard input will
+                           be used.
   -h,--help                Show this help text
 
 Available commands:
