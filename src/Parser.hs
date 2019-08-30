@@ -22,7 +22,8 @@ parseText opts title text = do
           LF -> T.lines text
           CR -> T.split (== '\r') text
           CRLF -> T.splitOn "\r\n" text
-      splitLine line = filter (not . T.null) $ T.splitOn (poSeparator opts) line
+
+      splitLine line = map T.strip $ filter (not . T.null) $ T.splitOn (poSeparator opts) line
 
       inputColsCount = length (splitLine firstLine)
 
