@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-14.2
+resolver: lts-22.6
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -32,10 +32,9 @@ packages:
 - .
 
 extra-deps:
-  - Chart-cairo-1.9.1
-  - cairo-0.13.6.0
-  - gtk2hs-buildtools-0.13.5.0
-  - dates-0.2.3.0
+  - Chart-cairo-1.9.4.1
+  - cairo-0.13.10.0
+  - dates-0.2.3.3
 
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
